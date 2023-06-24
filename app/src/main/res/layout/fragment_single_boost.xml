@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/boost_bg">
+
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/boost_rocket"
+        android:layout_width="wrap_content"
+        android:layout_height="300dp"
+        android:layout_marginTop="200dp"
+        android:layout_marginBottom="4dp"
+        android:src="@drawable/boosting" />
+
+    <ImageView
+        android:id="@+id/wave"
+        android:layout_width="wrap_content"
+        android:layout_height="300dp"
+        android:layout_marginTop="400dp"
+        android:layout_marginBottom="4dp"
+        android:src="@drawable/wave" />
+</FrameLayout>

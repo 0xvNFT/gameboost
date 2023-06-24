@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">GameBoost</string>
+    <string name="game">Games</string>
+    <string name="boost">Boost</string>
+    <string name="setting">Setting</string>
+    <string name="settings">Settings</string>
+    <string name="loading">Loading...</string>
+    <string name="logo_intro">Logo Introduction</string>
+    <string name="items">Items</string>
+    <string name="launch">Launch</string>
+    <string name="device_model">"Device Model: "</string>
+    <string name="device_manufacturer">"Device Manufacturer: "</string>
+    <string name="device_os_version">"Device OS Version: "</string>
+    <string name="ram_remaining">"RAM Remaining: "</string>
+    <string name="storage">"Storage: "</string>
+    <string name="storage_remaining">"Storage Remaining: "</string>
+    <string name="cpu">"CPU: "</string>
+    <string name="cpu_usage">"CPU Usage: "</string>
+    <string name="boost_successful">Boost successful</string>
+    <string name="boosted">Boosted</string>
+    <string name="boosting">Boosting</string>
+    <string name="h_tr">Hỗ trợ</string>
+</resources>
