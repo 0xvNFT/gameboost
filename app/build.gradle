@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace 'com.loto188.gameboost'
+    namespace 'com.game.gameboost'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.loto188.gameboost"
+        applicationId "com.game.gameboost"
         minSdk 24
         targetSdk 33
         versionCode 1

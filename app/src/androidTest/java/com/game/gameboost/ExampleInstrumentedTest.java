@@ -1,4 +1,4 @@
-package com.loto188.gameboost;
+package com.game.gameboost;
 
 import static org.junit.Assert.assertEquals;
 
