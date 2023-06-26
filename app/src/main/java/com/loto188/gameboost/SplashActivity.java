@@ -20,13 +20,10 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        // Delay launching the main activity by the specified timeout
         new Handler().postDelayed(() -> {
-            // Start the main activity
             Intent intent = new Intent(SplashActivity.this, MainActivity.class);
             startActivity(intent);
 
-            // Close the splash activity
             finish();
         }, SPLASH_TIMEOUT);
     }
