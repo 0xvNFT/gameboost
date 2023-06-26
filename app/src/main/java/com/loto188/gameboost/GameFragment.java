@@ -1,9 +1,11 @@
 package com.loto188.gameboost;
 
-import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +14,7 @@ import android.widget.GridView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -32,6 +35,15 @@ public class GameFragment extends Fragment {
 
         installedGames = new ArrayList<>();
 
+        installedGames.add(new Game("Nổ Hũ\n" +
+                "Popular", ContextCompat.getDrawable(requireContext(), R.drawable.custom_item), null, "https://www.google.com/"));
+        installedGames.add(new Game("Truy Cập Ngay\n" +
+                "Popular", ContextCompat.getDrawable(requireContext(), R.drawable.custom_item), null, "https://www.google.com/"));
+        installedGames.add(new Game("Slot\n" +
+                "Popular", ContextCompat.getDrawable(requireContext(), R.drawable.custom_item), null, "https://www.google.com/"));
+        installedGames.add(new Game("Xổ Số\n" +
+                "Popular", ContextCompat.getDrawable(requireContext(), R.drawable.custom_item), null, "https://www.google.com/"));
+
         fetchInstalledGames();
 
         GameAdapter adapter = new GameAdapter(requireContext(), installedGames);
@@ -39,7 +51,11 @@ public class GameFragment extends Fragment {
 
         gridView.setOnItemClickListener((parent, view, position, id) -> {
             Game game = installedGames.get(position);
-            openGameDetailFragment(game);
+            if (game.isSpecificItem()) {
+                openWebsiteForSpecificItem(game);
+            } else {
+                openGameDetailFragment(game);
+            }
         });
 
         return rootView;
@@ -47,9 +63,14 @@ public class GameFragment extends Fragment {
 
     private void fetchInstalledGames() {
         PackageManager packageManager = requireActivity().getPackageManager();
-        @SuppressLint("QueryPermissionsNeeded") List<ApplicationInfo> installedApplications = packageManager.getInstalledApplications(PackageManager.GET_META_DATA);
 
-        for (ApplicationInfo applicationInfo : installedApplications) {
+        Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
+        mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+
+        List<Game> installedGames = new ArrayList<>();
+        List<ResolveInfo> resolveInfos = packageManager.queryIntentActivities(mainIntent, 0);
+        for (ResolveInfo resolveInfo : resolveInfos) {
+            ApplicationInfo applicationInfo = resolveInfo.activityInfo.applicationInfo;
             if ((applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 0) {
                 String appName = applicationInfo.loadLabel(packageManager).toString();
                 Drawable appIcon = applicationInfo.loadIcon(packageManager);
@@ -57,7 +78,10 @@ public class GameFragment extends Fragment {
                 installedGames.add(new Game(appName, appIcon, appPackage));
             }
         }
+
+        this.installedGames.addAll(installedGames);
     }
+
 
     private void openGameDetailFragment(Game game) {
         GameDetailFragment gameDetailFragment = GameDetailFragment.newInstance(game.getName(), game.getIcon(), game.getPackageName());
@@ -68,16 +92,39 @@ public class GameFragment extends Fragment {
         fragmentTransaction.commit();
     }
 
+    private void openWebsiteForSpecificItem(Game game) {
+        String websiteUrl = game.getWebsiteUrl();
+        openWebsite(websiteUrl);
+    }
+
+    private void openWebsite(String url) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(url));
+        startActivity(intent);
+    }
 
     static class Game {
         private final String name;
         private final Drawable icon;
         private final String packageName;
 
+        private final boolean specificItem;
+        private final String websiteUrl;
+
         Game(String name, Drawable icon, String packageName) {
             this.name = name;
             this.icon = icon;
             this.packageName = packageName;
+            this.specificItem = false;
+            this.websiteUrl = null;
+        }
+
+        Game(String name, Drawable icon, String packageName, String websiteUrl) {
+            this.name = name;
+            this.icon = icon;
+            this.packageName = packageName;
+            this.specificItem = true;
+            this.websiteUrl = websiteUrl;
         }
 
         String getName() {
@@ -91,6 +138,15 @@ public class GameFragment extends Fragment {
         String getPackageName() {
             return packageName;
         }
+
+        boolean isSpecificItem() {
+            return specificItem;
+        }
+
+        String getWebsiteUrl() {
+            return websiteUrl;
+        }
     }
+
 
 }
